@@ -1,0 +1,16 @@
+---
+- name: Install .NET Agent 
+  hosts: win
+  gather_facts: no 
+  tasks:
+    - name: Copy Installation File to Target host.
+      win_copy:
+        src: "{{ src | defaut(/tmp/dotNetAgentSetup64-20.6.0.msi) }}"
+        dest: C:\Users\Public\dotNetAgentSetup64-20.6.0.msi
+        remote_src: "{{ remote_src | default(false) }}"
+
+    - name: Install .NET Agent MSI
+      win_package:
+        path: 'C:\Users\Public\dotNetAgentSetup64-20.6.0.msi'
+        log_path: '%TEMP%\AgentInstaller.log'
+        state: present
